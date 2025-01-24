@@ -1,11 +1,12 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
 import cors from 'cors';
 import axios from 'axios';
 
 const app = express();
-app.use(bodyParser.json());
+
+// Use built-in middleware for parsing JSON
+app.use(express.json());
 app.use(cors());
 
 const posts = {};
@@ -22,7 +23,7 @@ app.post('/posts', async (req, res) => {
     return res.status(400).json({ error: 'Title is required' });
   }
 
-  const id = uuidv4();  // Generate a unique ID
+  const id = uuidv4(); // Generate a unique ID
   posts[id] = {
     id,
     title
@@ -31,7 +32,8 @@ app.post('/posts', async (req, res) => {
   await axios.post('http://localhost:4005/events', {
     type: 'PostCreated',
     data: {
-      id, title
+      id,
+      title
     }
   });
 
@@ -44,6 +46,7 @@ app.use((err, req, res, next) => {
   res.status(500).send({ error: 'Something went wrong!' });
 });
 
+// Endpoint to handle incoming events
 app.post('/events', (req, res) => {
   console.log('Received Event in posts: ', req.body.type);
 

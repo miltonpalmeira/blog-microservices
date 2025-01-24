@@ -1,12 +1,11 @@
 import express from 'express';
-import bodyParser from 'body-parser';
 import { v4 as uuidv4 } from 'uuid';
 import cors from 'cors';
 import axios from 'axios';
 
 const app = express();
 
-app.use(bodyParser.json());
+app.use(express.json());
 app.use(cors());
 
 const commentsByPostId = {};
@@ -32,7 +31,7 @@ app.post('/posts/:id/comments', async (req, res) => {
       content,
       postId: req.params.id
     }
-  })
+  });
 
   res.status(201).json(comments);
 });
