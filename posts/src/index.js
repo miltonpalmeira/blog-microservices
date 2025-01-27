@@ -5,7 +5,6 @@ import axios from 'axios';
 
 const app = express();
 
-// Use built-in middleware for parsing JSON
 app.use(express.json());
 app.use(cors());
 
@@ -23,13 +22,13 @@ app.post('/posts', async (req, res) => {
     return res.status(400).json({ error: 'Title is required' });
   }
 
-  const id = uuidv4(); // Generate a unique ID
+  const id = uuidv4();
   posts[id] = {
     id,
     title
   };
 
-  await axios.post('http://localhost:4005/events', {
+  await axios.post('http://event-bus-srv:4005/events', {
     type: 'PostCreated',
     data: {
       id,
