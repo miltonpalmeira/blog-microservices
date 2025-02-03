@@ -16,7 +16,7 @@ app.get('/posts', (req, res) => {
 });
 
 // POST /posts - Create a new post
-app.post('/posts', async (req, res) => {
+app.post('/posts/create', async (req, res) => {
   const { title } = req.body;
   if (!title) {
     return res.status(400).json({ error: 'Title is required' });
